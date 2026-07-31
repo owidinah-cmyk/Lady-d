@@ -17,11 +17,9 @@ export default async function EventsPage() {
 
   return (
     <main className="min-h-screen bg-cream text-ink">
-      <div className="mx-auto max-w-3xl px-6 py-16">
-        <h1 className="font-serif text-5xl tracking-tight mb-3">
-          Events
-        </h1>
-        <p className="text-lg text-muted mb-12">
+      <div className="mx-auto max-w-3xl px-4 py-10 sm:px-6">
+        <h1 className="font-serif text-3xl mb-2">Events</h1>
+        <p className="text-base text-muted mb-10 sm:mb-12">
           Large-scale catering for the moments that matter.
         </p>
 

@@ -58,8 +58,8 @@ export default async function AccountPage() {
 
         {recentOrders.length === 0 ? (
           <div className="bg-white border border-hairline rounded-card p-6 text-center">
-            <p className="text-muted mb-4">
-              You haven&apos;t placed any orders yet.
+            <p className="text-muted mb-8">
+              Your order history will appear here once you place your first order.
             </p>
             <Link
               href="/menu"

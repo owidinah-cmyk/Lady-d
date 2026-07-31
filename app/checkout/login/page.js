@@ -17,8 +17,8 @@ export default function CheckoutLoginPage({ searchParams }) {
       <div className="mx-auto max-w-md px-6 py-16">
         <h1 className="font-serif text-3xl mb-2">Sign in to continue</h1>
         <p className="text-sm text-muted mb-6">
-          We need an account so you can track your order and see
-          your receipts.
+          Create an account in 30 seconds — we&apos;ll save your orders
+          and receipts for you.
         </p>
         <CheckoutLoginForm next={next} />
       </div>

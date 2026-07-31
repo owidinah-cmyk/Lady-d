@@ -13,7 +13,7 @@ export default function DishGrid({ dishes }) {
     return (
       <div className="text-center py-16">
         <p className="text-muted">
-          No dishes in this category yet.
+          Nothing in this category yet — check back soon!
         </p>
       </div>
     );

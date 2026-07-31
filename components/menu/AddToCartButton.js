@@ -61,7 +61,7 @@ export default function AddToCartButton({ variants }) {
       </button>
 
       {open && (
-        <div className="absolute right-0 top-12 z-30 w-64 bg-white border border-hairline rounded-card shadow-lg p-4">
+        <div className="absolute right-0 top-12 z-30 w-[calc(100vw-2rem)] max-w-xs bg-white border border-hairline rounded-card shadow-lg p-4">
           <p className="text-xs text-muted uppercase tracking-wide mb-2">
             Choose size
           </p>

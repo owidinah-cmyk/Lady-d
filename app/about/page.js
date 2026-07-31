@@ -9,9 +9,9 @@ export const metadata = {
 export default function AboutPage() {
   return (
     <main className="min-h-screen bg-cream text-ink">
-      <article className="mx-auto max-w-3xl px-6 py-16">
-        <header className="mb-10">
-          <h1 className="font-serif text-4xl md:text-5xl tracking-tight mb-3">
+      <article className="mx-auto max-w-3xl px-4 py-10 sm:px-6">
+        <header className="mb-8 sm:mb-10">
+          <h1 className="font-serif text-3xl sm:text-4xl md:text-5xl tracking-tight mb-3">
             About Lady D Kitchen
           </h1>
           <p className="text-sm text-muted">

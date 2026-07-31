@@ -35,11 +35,11 @@ export default async function OrderSuccessPage({ params }) {
   return (
     <main className="min-h-screen bg-cream text-ink">
       <div className="mx-auto max-w-2xl px-6 py-16 text-center">
-        <div className="w-16 h-16 mx-auto mb-6 rounded-full bg-clay text-white text-3xl flex items-center justify-center">
+        <div className="w-14 h-14 sm:w-16 sm:h-16 mx-auto mb-5 sm:mb-6 rounded-full bg-clay text-white text-2xl sm:text-3xl flex items-center justify-center">
           ✓
         </div>
-        <h1 className="font-serif text-4xl mb-3">Order placed</h1>
-        <p className="text-muted mb-6">
+        <h1 className="font-serif text-3xl sm:text-4xl mb-3">Order placed</h1>
+        <p className="text-sm text-muted mb-6">
           We&apos;ve opened WhatsApp with your order details. Send
           the message and our team will confirm your order and
           share payment details.

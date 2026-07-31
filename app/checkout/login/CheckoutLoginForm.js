@@ -9,9 +9,14 @@ import { useRouter } from "next/navigation";
 
 export default function CheckoutLoginForm({ next }) {
   const router = useRouter();
-  const [mode, setMode] = useState("login");
+  const [mode, setMode] = useState("signup");
   const [error, setError] = useState(null);
   const [isPending, startTransition] = useTransition();
+
+  const hint =
+    mode === "signup"
+      ? "New here? You're in the right place."
+      : "Welcome back.";
 
   function onSubmit(e) {
     e.preventDefault();
@@ -45,6 +50,7 @@ export default function CheckoutLoginForm({ next }) {
 
   return (
     <div className="bg-white border border-hairline rounded-card p-6">
+      <p className="text-sm text-muted mb-5 text-center">{hint}</p>
       <div className="flex border-b border-hairline mb-6">
         <button
           type="button"

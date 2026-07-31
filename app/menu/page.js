@@ -42,7 +42,7 @@ export default async function MenuPage() {
 
   return (
     <main className="min-h-screen bg-cream text-ink">
-      <div className="mx-auto max-w-6xl px-6 py-10">
+      <div className="mx-auto max-w-6xl px-4 py-8 sm:px-6 sm:py-10">
         {currentlyOpen === false && (
           <div className="bg-cream border border-hairline rounded-md p-3 mb-6 text-sm text-ink">
             We're currently closed. You can still browse the menu and place an order for our next open slot.

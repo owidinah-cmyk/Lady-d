@@ -10,10 +10,10 @@ export default function FloatingCartBar() {
   if (count === 0) return null;
 
   return (
-    <div className="fixed bottom-6 left-0 right-0 z-30 flex justify-center px-6 pointer-events-none">
+    <div className="fixed bottom-4 inset-x-0 z-30 flex justify-center px-4 pointer-events-none sm:px-6">
       <Link
         href="/order"
-        className="pointer-events-auto bg-clay hover:bg-clay-dark text-white font-medium px-6 py-3 rounded-full shadow-lg transition-colors flex items-center gap-2"
+        className="pointer-events-auto bg-clay hover:bg-clay-dark text-white font-medium min-h-[48px] px-6 py-3 rounded-full shadow-lg transition-colors flex items-center gap-2"
       >
         <span>View order ({count})</span>
         <svg

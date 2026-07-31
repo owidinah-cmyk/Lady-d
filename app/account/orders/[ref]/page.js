@@ -94,7 +94,7 @@ export default async function OrderDetailPage({ params }) {
       </Link>
 
       {/* Header */}
-      <div className="flex items-start justify-between gap-4 mb-6">
+      <div className="flex items-start justify-between gap-3 mb-6 flex-wrap">
         <div>
           <h2 className="font-serif text-3xl mb-1">{order.ref}</h2>
           <p className="text-sm text-muted">

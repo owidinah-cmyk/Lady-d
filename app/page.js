@@ -9,12 +9,12 @@ import ValuesStrip from "@/components/landing/ValuesStrip";
 import Testimonials from "@/components/landing/Testimonials";
 import ServiceArea from "@/components/landing/ServiceArea";
 import FinalCTA from "@/components/landing/FinalCTA";
-import { getApprovedReviews } from "@/lib/reviews/queries";
+import { getRandomApprovedReviews } from "@/lib/reviews/queries";
 
 export const dynamic = "force-dynamic";
 
 export default async function Home() {
-  const reviews = await getApprovedReviews({ limit: 6 });
+  const reviews = await getRandomApprovedReviews({ limit: 3 });
 
   return (
     <>

@@ -69,7 +69,7 @@ export default async function ReviewsPage() {
         <h2 className="font-serif text-2xl mb-4">Your reviews</h2>
         {submittedReviews.length === 0 ? (
           <p className="text-sm text-muted">
-            You haven&apos;t left any reviews yet.
+            Reviews you&apos;ve left will appear here.
           </p>
         ) : (
           <div className="space-y-3">

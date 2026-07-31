@@ -76,7 +76,7 @@ export default async function Header() {
               <circle cx="18" cy="20" r="1.5" />
             </svg>
             {cartCount > 0 && (
-              <span className="absolute -top-1.5 -right-1.5 bg-clay text-white text-[10px] font-semibold rounded-full min-w-[18px] h-[18px] flex items-center justify-center px-1">
+              <span className="absolute -top-2 -right-2 bg-clay text-white text-xs font-semibold rounded-full min-w-[20px] h-5 flex items-center justify-center px-1.5">
                 {cartCount}
               </span>
             )}

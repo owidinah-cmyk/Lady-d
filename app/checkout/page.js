@@ -55,7 +55,7 @@ export default async function CheckoutPage() {
 
   return (
     <main className="min-h-screen bg-cream text-ink">
-      <div className="mx-auto max-w-3xl px-6 py-10">
+      <div className="mx-auto max-w-3xl px-4 py-10 sm:px-6">
         <h1 className="font-serif text-4xl mb-2">Checkout</h1>
         <p className="text-sm text-muted mb-8">
           Almost there. Confirm your details, then we&apos;ll open
