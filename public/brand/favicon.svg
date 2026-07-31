@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" role="img" aria-label="Lady D Kitchen monogram">
+  <style>
+    .monogram { font-family: Georgia, "Times New Roman", serif; font-weight: 700; fill: #2A2520; }
+    .accent { fill: #B8933F; }
+  </style>
+  <text x="4" y="24" font-size="22" class="monogram">LD</text>
+  <circle cx="26" cy="8" r="3" class="accent"/>
+</svg>

@@ -1,0 +1,323 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// ==================== CUSTOMER + AUTH ====================
+
+model Customer {
+  id           String   @id @default(cuid())
+  name         String
+  email        String?  @unique
+  phone        String?
+  passwordHash String?
+  authMethod   String   // "facebook" | "email"
+  facebookId   String?  @unique
+  createdAt    DateTime @default(now())
+
+  orders         Order[]
+  reviews        Review[]
+  sessions       Session[]
+  eventInquiries EventInquiry[]
+  merchInquiries MerchInquiry[]
+}
+
+model Session {
+  id         String   @id @default(cuid())
+  customerId String
+  customer   Customer @relation(fields: [customerId], references: [id], onDelete: Cascade)
+  token      String   @unique
+  expiresAt  DateTime
+  createdAt  DateTime @default(now())
+
+  @@index([customerId])
+  @@index([expiresAt])
+}
+
+model AdminUser {
+  id           String   @id @default(cuid())
+  email        String   @unique
+  name         String
+  passwordHash String
+  createdAt    DateTime @default(now())
+
+  sessions AdminSession[]
+}
+
+model AdminSession {
+  id         String    @id @default(cuid())
+  adminId    String
+  admin      AdminUser @relation(fields: [adminId], references: [id], onDelete: Cascade)
+  token      String    @unique
+  expiresAt  DateTime
+  createdAt  DateTime  @default(now())
+
+  @@index([adminId])
+  @@index([expiresAt])
+}
+
+// ==================== CATALOG ====================
+
+model Dish {
+  id             String   @id @default(cuid())
+  code           String   @unique  // LDK-D-XXXX
+  name           String
+  slug           String   @unique
+  description    String
+  category       String
+  photos         String[] // Cloudinary URLs
+  leadTimeHours  Int      @default(24)
+  minOrder       Int      @default(1)
+  isActive       Boolean  @default(true)
+  abujaAvailable Boolean  @default(true)
+  phAvailable    Boolean  @default(true)
+  isFeatured     Boolean  @default(false)
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+
+  variants Variant[]
+
+  @@index([isFeatured, createdAt])
+}
+
+model Variant {
+  id       String  @id @default(cuid())
+  code     String  @unique  // LDK-V-XXXX
+  dishId   String
+  dish     Dish    @relation(fields: [dishId], references: [id], onDelete: Cascade)
+  size     String
+  price    Int     // in kobo (₦1 = 100 kobo)
+  isActive Boolean @default(true)
+
+  orderItems OrderItem[]
+
+  @@index([dishId])
+}
+
+model Zone {
+  id          String  @id @default(cuid())
+  code        String  @unique  // LDK-Z-{CITY}-NNNN
+  name        String
+  city        String  // "Abuja" | "Port Harcourt"
+  deliveryFee Int     // in kobo
+  isActive    Boolean @default(true)
+
+  orders Order[]
+
+  @@unique([name, city])
+}
+
+// ==================== HOURS ====================
+
+model ClosingHours {
+  id        String  @id @default(cuid())
+  dayOfWeek Int     // 0 = Sunday, 6 = Saturday
+  openTime  String? // "HH:MM" 24h format
+  closeTime String? // "HH:MM" 24h format
+  isClosed  Boolean @default(false)
+
+  @@unique([dayOfWeek])
+}
+
+model SpecialHours {
+  id        String   @id @default(cuid())
+  date      DateTime
+  isClosed  Boolean  @default(false)
+  openTime  String?
+  closeTime String?
+  label     String?
+}
+
+// ==================== ORDERS ====================
+
+model Order {
+  id              String    @id @default(cuid())
+  ref             String    @unique  // LDK-YYYY-NNNN
+  customerId      String
+  customer        Customer  @relation(fields: [customerId], references: [id])
+  customerName    String    // snapshot
+  customerPhone   String
+  customerEmail   String?
+  zoneId          String
+  zone            Zone      @relation(fields: [zoneId], references: [id])
+  zoneName        String    // snapshot
+  deliveryAddress String
+  deliveryDate    DateTime
+  deliveryTime    String    // "HH:MM"
+  notes           String?
+  subtotal        Int       // in kobo
+  deliveryFee     Int       // in kobo
+  total           Int       // in kobo
+  depositAmount   Int       // in kobo (typically 50% of total)
+  balanceAmount   Int       // in kobo
+  status          String    @default("NEW")
+  // NEW | DEPOSIT_CONFIRMED | PREPARING | OUT_FOR_DELIVERY | DELIVERED_PAID | DISPUTED
+  riderId         String?
+  rider           Rider?    @relation(fields: [riderId], references: [id])
+  riderName       String?   // snapshot
+  deliveredAt     DateTime?
+  createdAt       DateTime  @default(now())
+  updatedAt       DateTime  @updatedAt
+
+  items     OrderItem[]
+  receipts  Receipt[]
+  statusLog OrderStatusLog[]
+  review    Review?
+
+  @@index([customerId])
+  @@index([status])
+  @@index([deliveryDate])
+}
+
+model OrderItem {
+  id          String  @id @default(cuid())
+  orderId     String
+  order       Order   @relation(fields: [orderId], references: [id], onDelete: Cascade)
+  variantId   String
+  variant     Variant @relation(fields: [variantId], references: [id])
+  dishCode    String  // snapshot
+  variantCode String  // snapshot
+  dishName    String  // snapshot
+  variantSize String  // snapshot
+  quantity    Int
+  unitPrice   Int     // snapshot, in kobo
+
+  @@index([orderId])
+}
+
+model OrderStatusLog {
+  id         String   @id @default(cuid())
+  orderId    String
+  order      Order    @relation(fields: [orderId], references: [id], onDelete: Cascade)
+  fromStatus String?
+  toStatus   String
+  changedBy  String   // "admin:<email>" or "system"
+  changedAt  DateTime @default(now())
+
+  @@index([orderId])
+}
+
+model Receipt {
+  id        String   @id @default(cuid())
+  type      String   // "DEPOSIT" | "FINAL"
+  orderId   String
+  order     Order    @relation(fields: [orderId], references: [id], onDelete: Cascade)
+  content   Json     // full receipt payload (items, totals, customer, timestamps)
+  imageUrl  String?  // Cloudinary URL of rendered image
+  createdAt DateTime @default(now())
+
+  @@index([orderId])
+}
+
+// ==================== RIDERS ====================
+
+model Rider {
+  id       String  @id @default(cuid())
+  name     String
+  code     String  @unique
+  phone    String
+  isActive Boolean @default(true)
+
+  orders Order[]
+}
+
+// ==================== REVIEWS ====================
+
+model Review {
+  id         String   @id @default(cuid())
+  customerId String
+  customer   Customer @relation(fields: [customerId], references: [id])
+  orderId    String   @unique
+  order      Order    @relation(fields: [orderId], references: [id])
+  rating     Int      // 1-5
+  comment    String?
+  status     String   @default("PENDING")
+  // PENDING | APPROVED | REJECTED
+  createdAt  DateTime @default(now())
+
+  @@index([status])
+}
+
+model PasswordResetToken {
+  id        String   @id @default(cuid())
+  email     String
+  token     String   @unique
+  expiresAt DateTime
+  createdAt DateTime @default(now())
+
+  @@index([email])
+  @@index([expiresAt])
+}
+
+// ==================== EVENT INQUIRIES ====================
+
+model EventInquiry {
+  id              String    @id @default(cuid())
+  ref             String    @unique  // LDK-EVT-YYYY-NNNN
+  customerId      String?
+  customer        Customer? @relation(fields: [customerId], references: [id])
+  customerName    String
+  customerPhone   String
+  customerEmail   String?
+  eventDate       DateTime
+  guestCount      Int
+  location        String
+  categories      String[]  // ["Wedding", "Corporate Event", ...]
+  packageInterest String?
+  notes           String?
+  status          String    @default("NEW")
+  // NEW | QUOTED | BOOKED | COMPLETED | CANCELLED
+  createdAt       DateTime  @default(now())
+  updatedAt       DateTime  @updatedAt
+
+  bookedDate BookedDate?
+
+  @@index([eventDate])
+  @@index([status])
+}
+
+model BookedDate {
+  id             String       @id @default(cuid())
+  date           DateTime     @unique
+  eventInquiryId String       @unique
+  eventInquiry   EventInquiry @relation(fields: [eventInquiryId], references: [id], onDelete: Cascade)
+  label          String?      // e.g. "Smith Wedding"
+}
+
+// ==================== LADITOP INQUIRIES ====================
+
+model MerchInquiry {
+  id            String   @id @default(cuid())
+  ref           String   @unique  // LDK-MRC-YYYY-NNNN
+  customerId    String?
+  customer      Customer? @relation(fields: [customerId], references: [id])
+  customerName  String
+  customerPhone String
+  customerEmail String?
+  neededByDate  DateTime
+  status        String   @default("NEW")
+  // NEW | QUOTED | CONFIRMED | COMPLETED | CANCELLED
+  notes         String?
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+
+  items MerchInquiryItem[]
+
+  @@index([status])
+}
+
+model MerchInquiryItem {
+  id             String       @id @default(cuid())
+  merchInquiryId String
+  merchInquiry   MerchInquiry @relation(fields: [merchInquiryId], references: [id], onDelete: Cascade)
+  itemType       String       // "Bags" | "Cups" | "T-Shirts" | "Other"
+  customLabel    String?      // when itemType is "Other"
+  quantity       Int?
+  notes          String?
+
+  @@index([merchInquiryId])
+}

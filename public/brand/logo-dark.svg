@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 140" role="img" aria-label="Lady D Kitchen">
+  <style>
+    .word { font-family: Georgia, "Times New Roman", serif; font-weight: 500; fill: #FAF7F2; }
+    .accent { fill: #B8933F; }
+  </style>
+  <text x="20" y="92" font-size="64" class="word">Lady D Kitchen</text>
+  <circle cx="296" cy="78" r="6" class="accent"/>
+</svg>
