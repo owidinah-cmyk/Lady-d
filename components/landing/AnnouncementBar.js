@@ -2,6 +2,8 @@
 // Top announcement strip, terracotta text on cream tinted background.
 // Hidden on small screens via responsive classes.
 
+import Link from "next/link";
+
 export default function AnnouncementBar() {
   return (
     <div className="hidden sm:block bg-cream border-b border-hairline">

@@ -1,6 +1,8 @@
 // /components/landing/ServiceArea.js
 // Simple coverage section for Abuja and Port Harcourt.
 
+import Link from "next/link";
+
 export default function ServiceArea() {
   return (
     <section className="border-t border-hairline bg-white">
