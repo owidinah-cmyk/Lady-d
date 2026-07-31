@@ -4,9 +4,10 @@
 
 "use client";
 
-import { useState, useTransition } from "react";
+import { useState, useTransition, useEffect } from "react";
 import Link from "next/link";
 import { placeOrder } from "./actions";
+import { fetchTimeSlots } from "./slot-actions";
 import { formatPrice } from "@/lib/menu/dishes";
 
 export default function CheckoutForm({
@@ -17,14 +18,57 @@ export default function CheckoutForm({
   subtotal,
   deliveryFee,
   total,
+  maxLeadTimeHours = 0,
+  initialLineItems = [],
 }) {
   const [isPending, startTransition] = useTransition();
   const [error, setError] = useState(null);
+  const [slots, setSlots] = useState([]);
+  const [slotsLoading, setSlotsLoading] = useState(false);
+  const [closedReason, setClosedReason] = useState(null);
 
   // Default delivery date: tomorrow.
   const tomorrow = new Date();
   tomorrow.setDate(tomorrow.getDate() + 1);
   const defaultDate = tomorrow.toISOString().slice(0, 10);
+
+  const maxLeadTime = initialLineItems.length > 0
+    ? Math.max(...initialLineItems.map((i) => Number(i.dishLeadTimeHours ?? 0)))
+    : 0;
+
+  function formatTime12h(hhmm) {
+    const [h, m] = hhmm.split(":").map(Number);
+    const period = h >= 12 ? "PM" : "AM";
+    const h12 = h % 12 === 0 ? 12 : h % 12;
+    return `${h12}:${String(m).padStart(2, "0")} ${period}`;
+  }
+
+  async function onDateChange(dateStr) {
+    setSlotsLoading(true);
+    setClosedReason(null);
+    setSlots([]);
+    try {
+      const result = await fetchTimeSlots({ dateStr, leadTimeHours: maxLeadTime });
+      if (!result.open) {
+        setClosedReason(result.reason || "Closed");
+        setSlots([]);
+      } else {
+        setClosedReason(null);
+        setSlots(result.slots || []);
+      }
+    } catch (err) {
+      console.error("[fetchTimeSlots] error:", err.message);
+      setClosedReason("Could not load available times.");
+      setSlots([]);
+    } finally {
+      setSlotsLoading(false);
+    }
+  }
+
+  useEffect(() => {
+    onDateChange(defaultDate);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   function onSubmit(e) {
     e.preventDefault();
@@ -93,6 +137,7 @@ export default function CheckoutForm({
               required
               defaultValue={defaultDate}
               min={defaultDate}
+              onChange={(e) => onDateChange(e.target.value)}
               className="w-full px-3 py-2 border border-hairline rounded-md focus:outline-none focus:ring-2 focus:ring-clay"
             />
           </div>
@@ -100,25 +145,27 @@ export default function CheckoutForm({
             <label htmlFor="time" className="block text-sm font-medium mb-1">
               Delivery time
             </label>
-            <select
-              id="time"
-              name="time"
-              required
-              defaultValue="12:00"
-              className="w-full px-3 py-2 border border-hairline rounded-md focus:outline-none focus:ring-2 focus:ring-clay"
-            >
-              <option value="09:00">9:00 AM</option>
-              <option value="10:00">10:00 AM</option>
-              <option value="11:00">11:00 AM</option>
-              <option value="12:00">12:00 PM</option>
-              <option value="13:00">1:00 PM</option>
-              <option value="14:00">2:00 PM</option>
-              <option value="15:00">3:00 PM</option>
-              <option value="16:00">4:00 PM</option>
-              <option value="17:00">5:00 PM</option>
-              <option value="18:00">6:00 PM</option>
-              <option value="19:00">7:00 PM</option>
-            </select>
+            {slotsLoading ? (
+              <p className="text-xs text-muted py-2">Loading available times…</p>
+            ) : closedReason ? (
+              <p className="text-sm text-terracotta py-2">
+                We're closed on this day. Please pick another date.
+              </p>
+            ) : (
+              <select
+                id="time"
+                name="time"
+                required
+                defaultValue={slots[0] || ""}
+                className="w-full px-3 py-2 border border-hairline rounded-md focus:outline-none focus:ring-2 focus:ring-clay"
+              >
+                {slots.map((slot) => (
+                  <option key={slot} value={slot}>
+                    {formatTime12h(slot)}
+                  </option>
+                ))}
+              </select>
+            )}
           </div>
         </div>
 

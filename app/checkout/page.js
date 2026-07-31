@@ -49,6 +49,10 @@ export default async function CheckoutPage() {
 
   const total = subtotal + deliveryFee;
 
+  const maxLeadTimeHours = lineItems.length > 0
+    ? Math.max(...lineItems.map((i) => Number(i.dishLeadTimeHours ?? 0)))
+    : 0;
+
   return (
     <main className="min-h-screen bg-cream text-ink">
       <div className="mx-auto max-w-3xl px-6 py-10">
@@ -66,6 +70,8 @@ export default async function CheckoutPage() {
           subtotal={subtotal}
           deliveryFee={deliveryFee}
           total={total}
+          maxLeadTimeHours={maxLeadTimeHours}
+          initialLineItems={available}
         />
       </div>
     </main>
