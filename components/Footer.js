@@ -59,6 +59,9 @@ export default function Footer() {
               <Link href="/refund-policy" className="text-ink hover:text-clay">
                 Refund Policy
               </Link>
+              <Link href="/reviews" className="text-ink hover:text-clay">
+                Reviews
+              </Link>
             </div>
           </div>
 

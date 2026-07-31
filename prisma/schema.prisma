@@ -15,7 +15,7 @@ model Customer {
   email        String?  @unique
   phone        String?
   passwordHash String?
-  authMethod   String   // "facebook" | "email"
+  authMethod   String   // "facebook" | "google" | "email"
   facebookId   String?  @unique
   createdAt    DateTime @default(now())
 
@@ -42,7 +42,8 @@ model AdminUser {
   id           String   @id @default(cuid())
   email        String   @unique
   name         String
-  passwordHash String
+  passwordHash String?
+  googleId     String?  @unique
   createdAt    DateTime @default(now())
 
   sessions AdminSession[]

@@ -9,10 +9,13 @@ import ValuesStrip from "@/components/landing/ValuesStrip";
 import Testimonials from "@/components/landing/Testimonials";
 import ServiceArea from "@/components/landing/ServiceArea";
 import FinalCTA from "@/components/landing/FinalCTA";
+import { getApprovedReviews } from "@/lib/reviews/queries";
 
 export const dynamic = "force-dynamic";
 
-export default function Home() {
+export default async function Home() {
+  const reviews = await getApprovedReviews({ limit: 6 });
+
   return (
     <>
       <AnnouncementBar />
@@ -22,7 +25,7 @@ export default function Home() {
       <PaymentSafety />
       <ServicesOverview />
       <ValuesStrip />
-      <Testimonials />
+      <Testimonials reviews={reviews} />
       <ServiceArea />
       <FinalCTA />
     </>
