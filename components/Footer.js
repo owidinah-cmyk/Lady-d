@@ -1,5 +1,5 @@
 // Server Component. Renders the footer with site links, legal
-// links, and a copyright line using the legal entity name.
+// links, operating hours, and attribution.
 
 import Link from "next/link";
 
@@ -7,7 +7,7 @@ export default function Footer() {
   return (
     <footer className="bg-cream border-t border-hairline mt-24">
       <div className="mx-auto max-w-6xl px-6 py-10">
-        <div className="flex flex-col md:flex-row md:items-start md:justify-between gap-8">
+        <div className="grid md:grid-cols-4 gap-8">
           {/* Brand + tagline */}
           <div>
             <Link href="/" aria-label="Lady D Kitchen — home">
@@ -19,16 +19,16 @@ export default function Footer() {
               />
             </Link>
             <p className="text-sm text-muted mt-2">
-              Catering Services · Abuja &amp; Port Harcourt
+              12, St 5 · Catering Services
             </p>
           </div>
 
-          {/* Service links */}
-          <div className="flex gap-12 text-sm">
-            <div className="flex flex-col gap-2">
-              <span className="text-muted uppercase tracking-wide text-xs">
-                Services
-              </span>
+          {/* Services */}
+          <div>
+            <span className="text-muted uppercase tracking-wide text-xs">
+              Services
+            </span>
+            <div className="mt-2 flex flex-col gap-2 text-sm">
               <Link href="/menu" className="text-ink hover:text-clay">
                 Menu
               </Link>
@@ -39,10 +39,17 @@ export default function Footer() {
                 Laditop
               </Link>
             </div>
-            <div className="flex flex-col gap-2">
-              <span className="text-muted uppercase tracking-wide text-xs">
-                Legal
-              </span>
+          </div>
+
+          {/* Company */}
+          <div>
+            <span className="text-muted uppercase tracking-wide text-xs">
+              Company
+            </span>
+            <div className="mt-2 flex flex-col gap-2 text-sm">
+              <Link href="/about" className="text-ink hover:text-clay">
+                About
+              </Link>
               <Link href="/terms" className="text-ink hover:text-clay">
                 Terms
               </Link>
@@ -52,17 +59,32 @@ export default function Footer() {
               <Link href="/refund-policy" className="text-ink hover:text-clay">
                 Refund Policy
               </Link>
-              <Link href="/about" className="text-ink hover:text-clay">
-                About
-              </Link>
+            </div>
+          </div>
+
+          {/* Hours */}
+          <div>
+            <span className="text-muted uppercase tracking-wide text-xs">
+              Hours
+            </span>
+            <div className="mt-2 text-sm text-ink">
+              <p>Mon – Sat: 9am – 8pm</p>
+              <p>Sun: closed</p>
             </div>
           </div>
         </div>
 
-        <div className="mt-10 pt-6 border-t border-hairline">
+        <div className="mt-10 pt-6 border-t border-hairline text-center">
           <p className="text-xs text-muted">
+            Abuja &amp; Port Harcourt · WhatsApp{" "}
+            {process.env.NEXT_PUBLIC_WHATSAPP_NUMBER || "+234 ..."}
+          </p>
+          <p className="text-xs text-muted mt-2">
             © {new Date().getFullYear()} Lady D Kitchen Catering Services.
             All rights reserved.
+          </p>
+          <p className="text-[11px] text-muted italic mt-2">
+            Crafted with care in Abuja. Powered by Legacy LM.
           </p>
         </div>
       </div>

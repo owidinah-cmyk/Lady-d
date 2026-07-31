@@ -59,13 +59,16 @@ export default function AboutPage() {
           </p>
         </div>
 
-        <div className="mt-16 pt-8 border-t border-hairline">
+        <div className="mt-16 pt-8 border-t border-hairline flex flex-col gap-2">
           <Link
             href="/"
             className="text-clay hover:text-clay-dark text-sm"
           >
             ← Back to home
           </Link>
+          <p className="text-[11px] text-muted italic">
+            Crafted with care in Abuja. Powered by Legacy LM.
+          </p>
         </div>
       </article>
     </main>
