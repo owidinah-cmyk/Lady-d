@@ -1,3 +1,5 @@
+export const dynamic = "force-dynamic";
+
 // POST /api/auth/reset-password
 // Body: { token, password }
 // - Validate token format
@@ -72,7 +74,6 @@ export async function POST(request) {
     data: { passwordHash },
   });
 
-  // Force-logout on all devices.
   await deleteAllCustomerSessions(customer.id);
 
   return NextResponse.json({ ok: true });

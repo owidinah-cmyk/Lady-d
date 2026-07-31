@@ -3,6 +3,8 @@
 // - Return 200 with { admin } if logged in
 // - Return 200 with { admin: null } if not logged in
 
+export const dynamic = "force-dynamic";
+
 import { NextResponse } from "next/server";
 import { cookies } from "next/headers";
 import {

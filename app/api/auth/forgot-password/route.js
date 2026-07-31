@@ -1,3 +1,5 @@
+export const dynamic = "force-dynamic";
+
 // POST /api/auth/forgot-password
 // Body: { email }
 // - Validate email
@@ -43,7 +45,6 @@ export async function POST(request) {
   const emailR = validateEmail(body.email);
   if (!emailR.ok) return NextResponse.json({ error: emailR.error }, { status: 400 });
 
-  // Prune expired tokens before creating a new one.
   await pruneExpiredTokens();
 
   const customer = await prisma.customer.findUnique({
@@ -51,7 +52,6 @@ export async function POST(request) {
     select: { id: true, name: true, email: true },
   });
 
-  // Same response regardless of whether the email exists.
   if (customer && customer.email) {
     const { token } = await createResetToken(customer.email);
     let siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "";

@@ -1,3 +1,5 @@
+export const dynamic = "force-dynamic";
+
 // POST /api/admin/auth/login
 // Body: { email, password }
 // - Validate email + password
@@ -5,12 +7,16 @@
 // - Use verifyAdminCredentials (returns safe admin or null)
 // - Create session, set admin cookie
 // - Return 200 with safe admin data (id, email, name)
-//
-// Admin login gets its own limit string to keep it separate from
-// customer login. Reuse the same numeric values as customer login.
-const ADMIN_LOGIN_LIMIT = { maxAttempts: 10, windowMs: 15 * 60 * 1000 };
 
-export const dynamic = "force-dynamic";
+import { NextResponse } from "next/server";
+import {
+  validateEmail, validatePassword,
+  checkRateLimit, LIMITS, getClientIp,
+  verifyAdminCredentials, createAdminSession,
+  COOKIE_NAMES, cookieOptions,
+} from "@/lib/auth";
+
+const ADMIN_LOGIN_LIMIT = { maxAttempts: 10, windowMs: 15 * 60 * 1000 };
 
 export async function POST(request) {
   const ip = getClientIp(request);

@@ -1,3 +1,5 @@
+export const dynamic = "force-dynamic";
+
 // POST /api/auth/logout
 // - Read the customer session cookie
 // - Delete the session row

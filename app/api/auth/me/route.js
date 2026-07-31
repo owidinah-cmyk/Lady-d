@@ -1,3 +1,5 @@
+export const dynamic = "force-dynamic";
+
 // GET /api/auth/me
 // - Read the customer session cookie
 // - Look up the customer

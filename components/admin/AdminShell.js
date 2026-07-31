@@ -7,17 +7,30 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import {
+  DashboardIcon,
+  OrdersIcon,
+  DishesIcon,
+  ZonesIcon,
+  ClosingHoursIcon,
+  RidersIcon,
+  ReviewsIcon,
+  EventsIcon,
+  LaditopIcon,
+  SettingsIcon,
+} from "./icons";
 
 const NAV = [
-  { href: "/admin", label: "Dashboard", exact: true },
-  { href: "/admin/orders", label: "Orders" },
-  { href: "/admin/dishes", label: "Dishes" },
-  { href: "/admin/zones", label: "Zones" },
-  { href: "/admin/closing-hours", label: "Closing hours" },
-  { href: "/admin/riders", label: "Riders" },
-  { href: "/admin/reviews", label: "Reviews" },
-  { href: "/admin/events", label: "Events" },
-  { href: "/admin/laditop", label: "Laditop" },
+  { href: "/admin", label: "Dashboard", exact: true, icon: DashboardIcon },
+  { href: "/admin/orders", label: "Orders", icon: OrdersIcon },
+  { href: "/admin/dishes", label: "Dishes", icon: DishesIcon },
+  { href: "/admin/zones", label: "Zones", icon: ZonesIcon },
+  { href: "/admin/closing-hours", label: "Closing hours", icon: ClosingHoursIcon },
+  { href: "/admin/riders", label: "Riders", icon: RidersIcon },
+  { href: "/admin/reviews", label: "Reviews", icon: ReviewsIcon },
+  { href: "/admin/events", label: "Events", icon: EventsIcon },
+  { href: "/admin/laditop", label: "Laditop", icon: LaditopIcon },
+  { href: "/admin/settings", label: "Settings", icon: SettingsIcon },
 ];
 
 export default function AdminShell({ children, adminEmail }) {
@@ -43,16 +56,18 @@ export default function AdminShell({ children, adminEmail }) {
         <nav className="flex-1 p-2 space-y-0.5">
           {NAV.map((item) => {
             const active = isActive(item);
+            const Icon = item.icon;
             return (
               <Link
                 key={item.href}
                 href={item.href}
-                className={`block px-3 py-2 text-sm rounded transition-colors ${
+                className={`flex items-center px-3 py-2 text-sm rounded transition-colors ${
                   active
                     ? "bg-[#1A1614] text-white"
                     : "text-[#1A1614] hover:bg-[#F7F5F1]"
                 }`}
               >
+                <Icon className="mr-2 flex-none" />
                 {item.label}
               </Link>
             );

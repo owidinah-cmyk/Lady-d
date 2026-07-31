@@ -5,6 +5,8 @@
 // - Return 200 with { ok: true }
 // - Idempotent.
 
+export const dynamic = "force-dynamic";
+
 import { NextResponse } from "next/server";
 import { cookies } from "next/headers";
 import {

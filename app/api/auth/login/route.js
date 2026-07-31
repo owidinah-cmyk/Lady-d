@@ -1,3 +1,5 @@
+export const dynamic = "force-dynamic";
+
 // POST /api/auth/login
 // Body: { email, password }
 // - Validate
@@ -26,7 +28,6 @@ export async function POST(request) {
   const emailR = validateEmail(body.email);
   if (!emailR.ok) return NextResponse.json({ error: emailR.error }, { status: 400 });
 
-  // Rate limit by ip+email.
   const limit = checkRateLimit(
     `login:${ip}:${emailR.value}`,
     LIMITS.LOGIN.maxAttempts,
