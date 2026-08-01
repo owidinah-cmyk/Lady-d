@@ -117,6 +117,7 @@ export default async function AdminDashboardPage() {
             Nothing to do right now. Nice.
           </p>
         ) : (
+          <div className="overflow-x-auto">
           <div className="bg-white border border-[#7A2634] rounded-card overflow-hidden">
             <table className="w-full text-sm">
               <thead className="bg-[#F7F5F1] text-left">
@@ -150,6 +151,7 @@ export default async function AdminDashboardPage() {
               </tbody>
             </table>
           </div>
+          </div>
         )}
       </section>
 
@@ -164,6 +166,7 @@ export default async function AdminDashboardPage() {
         {recentOrders.length === 0 ? (
           <p className="text-sm text-[#A69A88]">No orders yet.</p>
         ) : (
+          <div className="overflow-x-auto">
           <div className="bg-white border border-[#E8E2D5] rounded-card overflow-hidden">
             <table className="w-full text-sm">
               <thead className="bg-[#F7F5F1] text-left">
@@ -194,6 +197,7 @@ export default async function AdminDashboardPage() {
                 ))}
               </tbody>
             </table>
+          </div>
           </div>
         )}
       </section>

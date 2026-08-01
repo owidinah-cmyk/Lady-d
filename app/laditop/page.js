@@ -1,8 +1,18 @@
 // /app/laditop/page.js
-// Laditop merchandise/printing inquiry page.
+// Upgraded Laditop page with 9 sections.
 
 import { getCurrentCustomer } from "@/lib/auth/current-customer";
 import MerchInquiryForm from "./MerchInquiryForm";
+
+import LaditopHero from "@/components/laditop/LaditopHero";
+import CatalogGrid from "@/components/laditop/CatalogGrid";
+import CapabilitiesList from "@/components/laditop/CapabilitiesList";
+import LaditopProcess from "@/components/laditop/LaditopProcess";
+import TurnaroundGuide from "@/components/laditop/TurnaroundGuide";
+import LaditopGallery from "@/components/laditop/LaditopGallery";
+import LaditopTestimonials from "@/components/laditop/LaditopTestimonials";
+import LaditopFAQ from "@/components/laditop/LaditopFAQ";
+import LaditopFinalCTA from "@/components/laditop/LaditopFinalCTA";
 
 export const dynamic = "force-dynamic";
 
@@ -17,33 +27,19 @@ export default async function LaditopPage() {
 
   return (
     <main className="min-h-screen bg-cream text-ink">
-      <div className="mx-auto max-w-3xl px-4 py-10 sm:px-6">
-        <h1 className="font-serif text-3xl mb-2 sm:mb-3">Laditop</h1>
-        <p className="text-base text-muted mb-10 sm:mb-12">
-          Branded merchandise and event printing.
-        </p>
+      <div className="mx-auto max-w-6xl px-4 py-10 sm:px-6">
+        <LaditopHero />
 
-        {/* Pitch */}
-        <section className="space-y-4 mb-12 leading-relaxed">
-          <p>
-            Souvenirs, event giveaways, branded swag — we design and
-            print it. Pick what you need, tell us a little about
-            your project, and we&apos;ll come back with a quote.
-          </p>
-          <p className="text-sm text-muted">
-            Common items: bags, cups, books, banners, flex banners,
-            gift bags, party bags, gift boxes, pens, t-shirts. Don&apos;t
-            see what you need? Pick &quot;Other&quot; and describe it.
-          </p>
-        </section>
+        <CatalogGrid />
+        <CapabilitiesList />
+        <LaditopProcess />
+        <TurnaroundGuide />
+        <LaditopGallery />
+        <LaditopTestimonials />
+        <LaditopFAQ />
+        <LaditopFinalCTA />
 
-        {/* Inquiry form */}
         <section>
-          <h2 className="font-serif text-2xl mb-2">Tell us what you need</h2>
-          <p className="text-sm text-muted mb-6">
-            Pick the items, add notes, and we&apos;ll open WhatsApp
-            to continue.
-          </p>
           <MerchInquiryForm customer={customer} />
         </section>
       </div>

@@ -59,6 +59,7 @@ export default async function DishesAdminPage() {
           </Link>
         </div>
       ) : (
+        <div className="overflow-x-auto">
         <div className="bg-white border border-[#E8E2D5] rounded-card overflow-hidden">
           <table className="w-full text-sm">
             <thead className="bg-[#F7F5F1] text-left">
@@ -116,8 +117,9 @@ export default async function DishesAdminPage() {
               })}
             </tbody>
           </table>
-        </div>
-      )}
+          </div>
+          </div>
+          )}
     </div>
   );
 }
